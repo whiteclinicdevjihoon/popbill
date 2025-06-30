@@ -1,26 +1,318 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
   <head>
-      <meta charset="utf-8">
-      <meta name="description" content="alphasec">
-      <meta name="author" content="alphasec">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>alphasec</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-      <link rel="stylesheet" href="/css/styles.css">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap">
-      <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="description" content="Popbill API 테스트" />
+    <meta name="author" content="Popbill Service" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Popbill API 테스트</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap"
+    />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+      .api-section {
+        margin-bottom: 30px;
+      }
+      .response-area {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 15px;
+        margin-top: 10px;
+        white-space: pre-wrap;
+        font-family: monospace;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .status-success {
+        color: #28a745;
+      }
+      .status-error {
+        color: #dc3545;
+      }
+    </style>
   </head>
   <body>
-    <div class="row">
-      <h1 class="h1">alphasec</h1>
-    </div>
-    <div class="row">
-      <div>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="h2 mb-4">Popbill API 테스트</h1>
+
+          <!-- 서비스 상태 확인 -->
+          <div class="api-section">
+            <h3>1. 서비스 상태 확인</h3>
+            <button class="btn btn-primary" onclick="checkStatus()">
+              상태 확인
+            </button>
+            <div
+              id="statusResponse"
+              class="response-area"
+              style="display: none"
+            ></div>
+          </div>
+
+          <!-- 잔액 조회 -->
+          <div class="api-section">
+            <h3>2. 잔액 조회</h3>
+            <button class="btn btn-info" onclick="getBalance()">
+              잔액 조회
+            </button>
+            <div
+              id="balanceResponse"
+              class="response-area"
+              style="display: none"
+            ></div>
+          </div>
+
+          <!-- 예금주 실명조회 -->
+          <div class="api-section">
+            <h3>3. 예금주 실명조회</h3>
+            <div class="form-group">
+              <label for="bankCode">은행코드:</label>
+              <select class="form-control" id="bankCode" style="width: 200px">
+                <option value="0002">산업은행</option>
+                <option value="0003">기업은행</option>
+                <option value="0004">국민은행</option>
+                <option value="0007">수협은행</option>
+                <option value="0011">농협은행</option>
+                <option value="0020">우리은행</option>
+                <option value="0023">SC제일은행</option>
+                <option value="0031">대구은행</option>
+                <option value="0032">부산은행</option>
+                <option value="0034">광주은행</option>
+                <option value="0035">제주은행</option>
+                <option value="0037">전북은행</option>
+                <option value="0039">경남은행</option>
+                <option value="0042">새마을금고</option>
+                <option value="0045">신협</option>
+                <option value="0048">신용협동조합</option>
+                <option value="0050">상호저축은행</option>
+                <option value="0071">우체국</option>
+                <option value="0081">하나은행</option>
+                <option value="0088">신한은행</option>
+                <option value="0089">케이뱅크</option>
+                <option value="0090">카카오뱅크</option>
+                <option value="0209">유안타증권</option>
+                <option value="0230">미래에셋증권</option>
+                <option value="0233">한국투자증권</option>
+                <option value="0237">NH투자증권</option>
+                <option value="0262">에이치엠씨투자증권</option>
+                <option value="0269">키움증권</option>
+                <option value="0278">신영증권</option>
+                <option value="0303">대우증권</option>
+                <option value="0311">교보증권</option>
+                <option value="0320">하이투자증권</option>
+                <option value="0390">유진투자증권</option>
+                <option value="0394">한화투자증권</option>
+                <option value="0395">하나대투증권</option>
+                <option value="0396">신한투자증권</option>
+                <option value="0397">동부증권</option>
+                <option value="0399">부국증권</option>
+                <option value="0400">유화증권</option>
+                <option value="0401">한국증권금융</option>
+                <option value="0402">한국포스증권</option>
+                <option value="0403">우리투자증권</option>
+                <option value="0404">우리종합금융</option>
+                <option value="0405">하나증권</option>
+                <option value="0406">신한금융투자</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="accountNum">계좌번호:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="accountNum"
+                placeholder="계좌번호 입력"
+                style="width: 200px"
+              />
+            </div>
+            <button class="btn btn-success" onclick="checkAccountHolder()">
+              예금주 조회
+            </button>
+            <div
+              id="accountResponse"
+              class="response-area"
+              style="display: none"
+            ></div>
+          </div>
+
+          <!-- 카카오 알림톡 발송 -->
+          <div class="api-section">
+            <h3>4. 카카오 알림톡 발송</h3>
+            <div class="form-group">
+              <label for="sendNum">발신번호:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="sendNum"
+                placeholder="발신번호"
+                style="width: 200px"
+              />
+            </div>
+            <div class="form-group">
+              <label for="templateCode">템플릿코드:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="templateCode"
+                placeholder="템플릿코드"
+                style="width: 200px"
+              />
+            </div>
+            <div class="form-group">
+              <label for="content">메시지 내용:</label>
+              <textarea
+                class="form-control"
+                id="content"
+                rows="3"
+                placeholder="메시지 내용"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="receivers">수신자 (JSON 형식):</label>
+              <textarea
+                class="form-control"
+                id="receivers"
+                rows="3"
+                placeholder='[{"rcv": "01012345678", "rcvnm": "홍길동"}]'
+              ></textarea>
+            </div>
+            <button class="btn btn-warning" onclick="sendKakao()">
+              알림톡 발송
+            </button>
+            <div
+              id="kakaoResponse"
+              class="response-area"
+              style="display: none"
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <span class="text-muted small">alphasec © 2024. All rights reserved.</span>
-    </div>
+
+    <script>
+      // 서비스 상태 확인
+      async function checkStatus() {
+        try {
+          const response = await fetch("/api/status");
+          const data = await response.json();
+          const responseDiv = document.getElementById("statusResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = JSON.stringify(data, null, 2);
+          responseDiv.className =
+            "response-area " +
+            (data.success ? "status-success" : "status-error");
+        } catch (error) {
+          const responseDiv = document.getElementById("statusResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = "Error: " + error.message;
+          responseDiv.className = "response-area status-error";
+        }
+      }
+
+      // 잔액 조회
+      async function getBalance() {
+        try {
+          const response = await fetch("/api/balance");
+          const data = await response.json();
+          const responseDiv = document.getElementById("balanceResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = JSON.stringify(data, null, 2);
+          responseDiv.className =
+            "response-area " +
+            (data.success ? "status-success" : "status-error");
+        } catch (error) {
+          const responseDiv = document.getElementById("balanceResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = "Error: " + error.message;
+          responseDiv.className = "response-area status-error";
+        }
+      }
+
+      // 예금주 실명조회
+      async function checkAccountHolder() {
+        const bankCode = document.getElementById("bankCode").value;
+        const accountNum = document.getElementById("accountNum").value;
+
+        if (!accountNum) {
+          alert("계좌번호를 입력해주세요.");
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/account-holder?bankCode=${bankCode}&accountNum=${accountNum}`
+          );
+          const data = await response.json();
+          const responseDiv = document.getElementById("accountResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = JSON.stringify(data, null, 2);
+          responseDiv.className =
+            "response-area " +
+            (data.success ? "status-success" : "status-error");
+        } catch (error) {
+          const responseDiv = document.getElementById("accountResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = "Error: " + error.message;
+          responseDiv.className = "response-area status-error";
+        }
+      }
+
+      // 카카오 알림톡 발송
+      async function sendKakao() {
+        const sendNum = document.getElementById("sendNum").value;
+        const templateCode = document.getElementById("templateCode").value;
+        const content = document.getElementById("content").value;
+        const receiversText = document.getElementById("receivers").value;
+
+        if (!sendNum || !templateCode || !content || !receiversText) {
+          alert("모든 필드를 입력해주세요.");
+          return;
+        }
+
+        try {
+          const receivers = JSON.parse(receiversText);
+          const requestData = {
+            sendNum: sendNum,
+            templateCode: templateCode,
+            content: content,
+            altContent: content,
+            receivers: receivers,
+          };
+
+          const response = await fetch("/api/kakao/send", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+          });
+
+          const data = await response.json();
+          const responseDiv = document.getElementById("kakaoResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = JSON.stringify(data, null, 2);
+          responseDiv.className =
+            "response-area " +
+            (data.success ? "status-success" : "status-error");
+        } catch (error) {
+          const responseDiv = document.getElementById("kakaoResponse");
+          responseDiv.style.display = "block";
+          responseDiv.innerHTML = "Error: " + error.message;
+          responseDiv.className = "response-area status-error";
+        }
+      }
+    </script>
   </body>
 </html>
