@@ -13,20 +13,32 @@ const PORT = process.env.PORT || 3000;
 // CORS 설정
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:3001"];
+  : [
+      "http://localhost:3001",
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:3001",
+    ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS 정책에 의해 차단되었습니다"));
+// 개발 환경에서는 모든 도메인 허용
+const corsOptions =
+  process.env.NODE_ENV === "production"
+    ? {
+        origin: function (origin, callback) {
+          if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+          } else {
+            callback(new Error("CORS 정책에 의해 차단되었습니다"));
+          }
+        },
+        credentials: true,
       }
-    },
-    credentials: true,
-  })
-);
+    : {
+        origin: true, // 개발 환경에서는 모든 도메인 허용
+        credentials: true,
+      };
+
+app.use(cors(corsOptions));
 
 // Body parser 미들웨어
 app.use(bodyParser.json());
